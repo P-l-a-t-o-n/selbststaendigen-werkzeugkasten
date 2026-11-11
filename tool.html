@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selbstständigen-Werkzeugkasten — Rechnung, Kalkulation, Impressum</title>
+<meta name="description" content="Kostenlose Browser-Werkzeuge für Solo-Selbstständige in Deutschland: Rechnungsgenerator mit Pflichtangaben-Check, Preis-Kalkulator (Marge vs. Aufschlag) und Impressum-Assistent nach § 5 DDG. Ohne Cookies, ohne Tracking, alle Daten bleiben im Browser.">
+<meta name="robots" content="index,follow">
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#14181f; --muted:#5b6472; --line:#e2e6ec;
+    --accent:#1f6feb; --ok:#1a7f52; --okbg:#e8f6ef; --warn:#a8620b; --warnbg:#fdf3e3;
+    --err:#b4232b; --errbg:#fdecec; --radius:12px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1216; --card:#171b21; --ink:#e7ecf3; --muted:#9aa5b4; --line:#272d36;
+           --ok:#5fd39b; --okbg:#132a20; --warn:#e2b263; --warnbg:#2b2313; --err:#ff8b8b; --errbg:#2d1618; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+  header .wrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+  h1{font-size:17px;margin:0;letter-spacing:-.01em}
+  .badge{font-size:12px;padding:2px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+  nav{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0;padding-bottom:12px}
+  nav button{font:inherit;font-size:14px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);
+    background:transparent;color:var(--muted);cursor:pointer}
+  nav button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  main{padding:22px 0 60px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:16px}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  label{display:block;font-size:13px;color:var(--muted);margin:0 0 4px}
+  input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;
+    background:var(--bg);color:var(--ink);font:inherit;font-size:15px}
+  textarea{min-height:70px;resize:vertical}
+  h2{font-size:18px;margin:0 0 4px}
+  h3{font-size:15px;margin:18px 0 8px}
+  p.lead{color:var(--muted);margin:0 0 14px;font-size:14px}
+  button.act{font:inherit;font-size:14px;padding:9px 14px;border-radius:8px;border:1px solid var(--accent);
+    background:var(--accent);color:#fff;cursor:pointer}
+  button.ghost{font:inherit;font-size:14px;padding:9px 14px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--ink);cursor:pointer}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .status{font-size:13px;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .status.ok{background:var(--okbg);color:var(--ok)}
+  .status.fehlt{background:var(--errbg);color:var(--err)}
+  .status.optional,.status.nichtvorhanden{background:var(--warnbg);color:var(--warn)}
+  .note{background:var(--warnbg);color:var(--warn);border-radius:10px;padding:11px 13px;font-size:13.5px;margin:12px 0}
+  .okbox{background:var(--okbg);color:var(--ok);border-radius:10px;padding:11px 13px;font-size:13.5px;margin:12px 0}
+  .out{font-variant-numeric:tabular-nums;font-size:28px;font-weight:650;letter-spacing:-.02em}
+  .muted{color:var(--muted);font-size:13px}
+  .rowbtns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  ul.small{padding-left:18px;font-size:14px;color:var(--muted)}
+  a{color:var(--accent)}
+  table.items input{padding:7px 8px}
+  .totals{margin-left:auto;max-width:380px;min-width:300px}
+  .totals td{white-space:nowrap}
+  .hide{display:none !important}
+  footer{border-top:1px solid var(--line);padding:18px 0;color:var(--muted);font-size:13px}
+  @media print{
+    header nav,.no-print{display:none !important}
+    body{background:#fff}
+    .card{border:0;padding:0}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Selbstständigen-Werkzeugkasten</h1>
+    <span class="badge">kostenlos nutzbar · Teil des Komplett-Kits</span>
+  </div>
+  <div class="wrap">
+    <nav role="tablist">
+      <button role="tab" id="tab-rechnung" aria-selected="true">Rechnung</button>
+      <button role="tab" id="tab-kalk" aria-selected="false">Preis-Kalkulation</button>
+      <button role="tab" id="tab-impressum" aria-selected="false">Impressum</button>
+      <button role="tab" id="tab-recht" aria-selected="false">Rechtsstand &amp; Quellen</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============================ TAB 1: RECHNUNG ============================ -->
+<section id="panel-rechnung" class="tabpanel">
+  <div class="card">
+    <h2>Rechnung erstellen</h2>
+    <p class="lead">Pflichtangaben nach § 14 Abs. 4 UStG werden direkt beim Ausfüllen geprüft. Drucken über „PDF/Rechnung" erzeugt eine druckfähige Rechnung.</p>
+
+    <h3>1 — Kleinunternehmer-Status (§ 19 UStG)</h3>
+    <div class="grid g3">
+      <div><label for="kjVorjahr">Umsatz Vorjahr (netto, €)</label><input id="kjVorjahr" type="number" min="0" step="100" value="0"></div>
+      <div><label for="kjLaufjahr">Umsatz laufendes Jahr (netto, €)</label><input id="kjLaufjahr" type="number" min="0" step="100" value="0"></div>
+      <div><label for="kjStatus">Status</label><div id="kjStatus" class="status optional">—</div></div>
+    </div>
+    <div id="kjHinweis" class="note"></div>
+
+    <h3>2 — Aussteller und Kunde</h3>
+    <div class="grid g2">
+      <div><label for="rAussteller">Aussteller: Name + Anschrift</label><textarea id="rAussteller" placeholder="Max Mustermann\nMusterweg 1\n12345 Musterstadt"></textarea></div>
+      <div><label for="rKunde">Leistungsempfänger: Name + Anschrift</label><textarea id="rKunde" placeholder="Kunde GmbH\nKundenweg 2\n12345 Kundenstadt"></textarea></div>
+      <div><label for="rSteuernummer">Steuernummer / USt-IdNr. (falls vorhanden)</label><input id="rSteuernummer" placeholder="12/345/67890"></div>
+      <div><label for="rDatum">Ausstellungsdatum</label><input id="rDatum" type="date"></div>
+      <div><label for="rLeistungsdatum">Zeitpunkt der Leistung (Lieferdatum)</label><input id="rLeistungsdatum" type="date"></div>
+      <div><label for="rSatz">USt-Satz für Positionen</label>
+        <select id="rSatz"><option value="19">19 %</option><option value="7">7 %</option><option value="0">0 %</option></select></div>
+    </div>
+
+    <h3>3 — Positionen</h3>
+    <table class="items">
+      <thead><tr><th style="width:52%">Bezeichnung</th><th class="num" style="width:14%">Menge</th><th class="num" style="width:17%">Einzelpreis netto (€)</th><th class="num" style="width:17%">Summe</th><th></th></tr></thead>
+      <tbody id="rItems"></tbody>
+    </table>
+    <div class="rowbtns no-print">
+      <button class="ghost" id="rAdd">+ Position</button>
+      <button class="act" id="rPrint">PDF / Rechnung drucken</button>
+      <span class="muted" id="rSaveHint"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Prüfung der Pflichtangaben</h2>
+    <div id="rCheck"></div>
+  </div>
+
+  <div class="card" id="rVorschau">
+    <h2>Rechnungsvorschau</h2>
+    <div id="rPreview"></div>
+  </div>
+</section>
+
+<!-- ============================ TAB 2: KALKULATION ============================ -->
+<section id="panel-kalk" class="tabpanel hide">
+  <div class="card">
+    <h2>Preis-Kalkulation</h2>
+    <p class="lead">Der häufigste Kalkulationsfehler: Marge und Aufschlag werden verwechselt. Das Werkzeug rechnet beide Varianten getrennt und zeigt, was übrig bleibt.</p>
+    <div class="grid g3">
+      <div><label for="kKosten">Kosten für den Auftrag (€)</label><input id="kKosten" type="number" min="0" step="10" value="700"></div>
+      <div><label for="kStunden">Stundenaufwand (h)</label><input id="kStunden" type="number" min="0" step="0.5" value="10"></div>
+      <div><label for="kVariante">Rechenweg</label>
+        <select id="kVariante"><option value="marge">Marge (% vom Preis)</option><option value="aufschlag">Aufschlag (% auf Kosten)</option></select></div>
+      <div><label for="kParameter">Parameter (%)</label><input id="kParameter" type="number" min="0" step="1" value="30"></div>
+    </div>
+    <div class="rowbtns no-print">
+      <button class="act" id="kBerechnen">Berechnen</button>
+    </div>
+    <div id="kErgebnis"></div>
+
+    <h3>Kosten je Stunde</h3>
+    <div class="grid g3">
+      <div><label for="kJahreskosten">Jahreskosten (€)</label><input id="kJahreskosten" type="number" min="0" step="100" value="48000"></div>
+      <div><label for="kArbeitsstunden">Fakturierbare Stunden/Jahr</label><input id="kArbeitsstunden" type="number" min="0" step="10" value="1200"></div>
+    </div>
+    <div class="rowbtns no-print"><button class="ghost" id="kSatzBerechnen">Stundensatz berechnen</button></div>
+    <div id="kSatzErgebnis"></div>
+  </div>
+</section>
+
+<!-- ============================ TAB 3: IMPRESSUM ============================ -->
+<section id="panel-impressum" class="tabpanel hide">
+  <div class="card">
+    <h2>Impressum-Assistent</h2>
+    <p class="lead">Prüft die Angaben nach § 5 Abs. 1 DDG für geschäftsmäßige, in der Regel gegen Entgelt angebotene digitale Dienste und erzeugt einen Mustertext.</p>
+    <div class="grid g2">
+      <div><label for="iName">Name und Anschrift des Anbieters</label><textarea id="iName" placeholder="Max Mustermann\nMusterweg 1\n12345 Musterstadt"></textarea></div>
+      <div><label for="iKontakt">E-Mail + Telefon (schnelle Kontaktaufnahme)</label><input id="iKontakt" placeholder="max@example.org · +49 123 456789"></div>
+      <div><label for="iUstId">USt-IdNr. / W-IdNr. (falls vorhanden)</label><input id="iUstId" placeholder="optional"></div>
+      <div><label for="iRegister">Register + Registernummer (falls vorhanden)</label><input id="iRegister" placeholder="optional, z. B. HRB 12345 Amtsgericht Musterstadt"></div>
+      <div><label for="iBerufsrecht">Berufsrechtliche Angaben (nur bei reglementierten Berufen)</label><input id="iBerufsrecht" placeholder="optional"></div>
+    </div>
+    <div class="rowbtns no-print"><button class="act" id="iErzeugen">Impressum erzeugen &amp; prüfen</button></div>
+    <div id="iErgebnis"></div>
+  </div>
+</section>
+
+<!-- ============================ TAB 4: RECHT ============================ -->
+<section id="panel-recht" class="tabpanel hide">
+  <div class="card">
+    <h2>Rechtsstand der eingebauten Werte</h2>
+    <p class="lead">Alle Werte in diesem Werkzeug stammen aus öffentlich zugänglichen, am 10.11.2026 abgerufenen Quellen. Keine Steuerberatung im Einzelfall.</p>
+    <table>
+      <thead><tr><th style="width:34%">Wert / Regelung</th><th style="width:22%">Fundstelle</th><th>Quelle (abgerufen 10.11.2026)</th></tr></thead>
+      <tbody>
+        <tr><td>Kleinunternehmer-Grenze: 25.000 € (Vorjahr) / 100.000 € (laufendes Jahr)</td><td>§ 19 Abs. 1 S. 1 UStG</td><td><a href="https://www.gesetze-im-internet.de/ustg_1980/__19.html">gesetze-im-internet.de</a></td></tr>
+        <tr><td>Pflichtangaben der Rechnung, Ausstellungspflichten</td><td>§ 14 UStG</td><td><a href="https://www.gesetze-im-internet.de/ustg_1980/__14.html">gesetze-im-internet.de</a></td></tr>
+        <tr><td>Impressumspflicht (Name, Anschrift, elektronische Kontaktaufnahme, USt-/W-IdNr.)</td><td>§ 5 Abs. 1 DDG</td><td><a href="https://www.gesetze-im-internet.de/ddg/__5.html">gesetze-im-internet.de</a></td></tr>
+        <tr><td>Anzeigepflicht bei Aufnahme eines stehenden Gewerbes</td><td>§ 14 Abs. 1 GewO</td><td><a href="https://www.gesetze-im-internet.de/gewo/__14.html">gesetze-im-internet.de</a></td></tr>
+        <tr><td>Grundsatz der Gewerbefreiheit</td><td>§ 1 GewO</td><td><a href="https://www.gesetze-im-internet.de/gewo/__1.html">gesetze-im-internet.de</a></td></tr>
+      </tbody>
+    </table>
+    <div class="note">Hinweis: Dieses Werkzeug ersetzt keine Rechts- oder Steuerberatung. Insbesondere die Frage, ob eine Tätigkeit als freiberuflich oder als Gewerbe einzuordnen ist und ob eine Anmeldung beim Gewerbeamt nötig ist, ist im Einzelfall zu prüfen (siehe § 1 und § 14 GewO).</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>Selbstständigen-Werkzeugkasten — läuft vollständig im Browser. Keine Cookies, kein Tracking, keine Datenübertragung: Eingaben bleiben in diesem Gerät (lokal gespeichert) und werden nirgends hingesendet.</p>
+</footer>
+
+<script src="lib/calc.js"></script>
+<script>
+(function(){
+  'use strict';
+  var K = window.KitCalc;
+  var KEY = 'kit-state-v1';
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------- Tabs ---------- */
+  var tabs = [['rechnung','tab-rechnung','panel-rechnung'],['kalk','tab-kalk','panel-kalk'],
+              ['impressum','tab-impressum','panel-impressum'],['recht','tab-recht','panel-recht']];
+  tabs.forEach(function(t){
+    $(t[1]).addEventListener('click', function(){
+      tabs.forEach(function(x){
+        $(x[1]).setAttribute('aria-selected', String(x[0]===t[0]));
+        $(x[2]).classList.toggle('hide', x[0]!==t[0]);
+      });
+      location.hash = t[0];
+    });
+  });
+  if (location.hash && location.hash.length>1){
+    var hit = tabs.filter(function(x){ return x[0]===location.hash.slice(1); })[0];
+    if (hit) $(hit[1]).click();
+  }
+
+  /* ---------- Zustand lokal speichern (bleibt im Browser) ---------- */
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; }
+  }
+  function saveState(){
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+  }
+  var state = loadState();
+
+  function val(id){ var el=$(id); return el ? el.value : ''; }
+  function setVal(id, v){ var el=$(id); if (el && v!==undefined && v!==null) el.value = v; }
+
+  /* ---------- Positionsliste ---------- */
+  function renderItems(){
+    var tb = $('rItems');
+    tb.innerHTML = '';
+    if (!state.items || !state.items.length) state.items = [{ bezeichnung:'', menge:1, einzelpreis:0 }];
+    var items = state.items;
+    items.forEach(function(it, idx){
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><input type="text" data-i="'+idx+'" data-k="bezeichnung" value="'+escapeAttr(it.bezeichnung||'')+'" placeholder="z. B. Beratung Landschaftsbau, 10 Stunden"></td>'+
+        '<td class="num"><input type="number" data-i="'+idx+'" data-k="menge" min="0" step="0.5" value="'+(it.menge==null?1:it.menge)+'"></td>'+
+        '<td class="num"><input type="number" data-i="'+idx+'" data-k="einzelpreis" min="0" step="0.01" value="'+(it.einzelpreis==null?0:it.einzelpreis)+'"></td>'+
+        '<td class="num" data-sum="'+idx+'">—</td>'+
+        '<td><button class="ghost" data-del="'+idx+'" title="Position löschen">✕</button></td>';
+      tb.appendChild(tr);
+    });
+    tb.querySelectorAll('input').forEach(function(inp){
+      inp.addEventListener('input', function(){
+        var idx = parseInt(inp.getAttribute('data-i'),10);
+        var k = inp.getAttribute('data-k');
+        state.items[idx][k] = (k==='bezeichnung') ? inp.value : parseFloat(inp.value.replace(',','.')) || 0;
+        saveState(); rechnen();
+      });
+    });
+    tb.querySelectorAll('button[data-del]').forEach(function(b){
+      b.addEventListener('click', function(){
+        state.items.splice(parseInt(b.getAttribute('data-del'),10),1);
+        if (!state.items.length) state.items=[{bezeichnung:'',menge:1,einzelpreis:0}];
+        saveState(); renderItems(); rechnen();
+      });
+    });
+  }
+  function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escapeHtml(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ---------- Rechnungslogik ---------- */
+  function rechnen(){
+    if (!state.items || !state.items.length) state.items = [{ bezeichnung:'', menge:1, einzelpreis:0 }];
+    var kl = K.kleinunternehmerStatus(val('kjVorjahr'), val('kjLaufjahr'));
+    var st = $('kjStatus');
+    st.className = 'status ' + (kl.frei ? 'ok' : 'fehlt');
+    st.textContent = kl.frei ? 'Kleinunternehmer (§ 19 UStG)' : 'USt-pflichtig';
+    $('kjHinweis').innerHTML = kl.frei
+      ? 'Deine Umsätze liegen unter den Grenzen von <b>'+kl.grenzeVorjahr.toLocaleString('de-DE')+' €</b> (Vorjahr) und <b>'+kl.grenzeLaufjahr.toLocaleString('de-DE')+' €</b> (laufendes Jahr). Du weist <b>keine Umsatzsteuer</b> aus; der Kunde schuldet keine. § 19 Abs. 1 S. 1 UStG.'
+      : 'Mindestens eine Grenze des § 19 UStG ist überschritten. Die Rechnung braucht USt-Ausweis (Satz und Betrag) und eine USt-IdNr. bzw. Steuernummer.';
+
+    var satz = parseInt(val('rSatz')||'19',10);
+    /* Kleinunternehmer nach § 19 UStG: es wird keine Umsatzsteuer berechnet und
+       ausgewiesen — die Rechnungssumme ist dann identisch mit der Nettosumme. */
+    var satzEffektiv = K.effektiverSatz(kl.frei, satz);
+    var pos = K.positionen(state.items, satzEffektiv);
+    var check = K.rechnungsCheck({
+      name: val('rAussteller'), anschrift: val('rAussteller'),
+      kunde: val('rKunde'), kundeAnschrift: val('rKunde'),
+      datum: val('rDatum'), leistung: state.items.map(function(i){return i.bezeichnung;}).join('; '),
+      preis: pos.summeNetto, steuernummer: val('rSteuernummer'),
+      datumLeistung: val('rLeistungsdatum'),
+      vorjahrUmsatz: val('kjVorjahr'), laufjahrUmsatz: val('kjLaufjahr')
+    });
+
+    /* Summen je Position */
+    pos.positionen.forEach(function(p, idx){
+      var cell = document.querySelector('[data-sum="'+idx+'"]');
+      if (cell) cell.textContent = p.netto.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+    });
+
+    /* Check-Liste */
+    var rows = check.felder.map(function(f){
+      return '<tr><td>'+escapeHtml(f.label)+(f.hinweis?'<br><span class="muted">'+escapeHtml(f.hinweis)+'</span>':'')+'</td>'+
+             '<td><span class="status '+(f.status==='ok'?'ok':(f.status==='fehlt'?'fehlt':'optional'))+'">'+f.status+'</span></td></tr>';
+    }).join('');
+    $('rCheck').innerHTML =
+      '<table><thead><tr><th>Angabe</th><th style="width:130px">Status</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      '<div class="'+(check.vollstaendig?'okbox':'note')+'">'+
+      (check.vollstaendig ? 'Alle Pflichtangaben sind erfasst.' : 'Es fehlen: <b>'+check.fehlend+'</b> Pflichtangabe(n).')+
+      '<br>'+escapeHtml(check.hinweis)+'</div>';
+
+    /* Vorschau */
+    var zeilen = pos.positionen.map(function(p){
+      return '<tr><td>'+escapeHtml(p.bezeichnung)+'</td><td class="num">'+p.menge+'</td><td class="num">'+p.einzelpreis.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</td>'+
+             '<td class="num">'+p.netto.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</td></tr>';
+    }).join('');
+    var ustZeile = kl.frei
+      ? '<tr><td colspan="3">Umsatzsteuer</td><td class="num">— (§ 19 UStG)</td></tr>'
+      : '<tr><td colspan="3">Umsatzsteuer '+satz+' %</td><td class="num">'+pos.summeUst.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</td></tr>';    $('rPreview').innerHTML =
+      '<table><thead><tr><th>Position</th><th class="num">Menge</th><th class="num">Einzel netto</th><th class="num">Netto</th></tr></thead><tbody>'+zeilen+'</tbody></table>'+
+      '<table class="totals"><tbody>'+
+      '<tr><td>Netto gesamt</td><td class="num">'+pos.summeNetto.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</td></tr>'+
+      ustZeile+
+      '<tr><td><b>Gesamtbetrag</b></td><td class="num"><b>'+pos.summeBrutto.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</b></td></tr>'+
+      '</tbody></table>';
+    state.items = state.items || [];
+    saveState();
+  }
+
+  $('rAdd').addEventListener('click', function(){
+    if (!state.items) state.items=[];
+    state.items.push({bezeichnung:'',menge:1,einzelpreis:0});
+    saveState(); renderItems(); rechnen();
+  });
+  $('rPrint').addEventListener('click', function(){ window.print(); });
+  ['kjVorjahr','kjLaufjahr','rAussteller','rKunde','rSteuernummer','rDatum','rLeistungsdatum','rSatz'].forEach(function(id){
+    var el = $(id);
+    if (!el) return;
+    el.addEventListener('input', function(){
+      state[id] = el.type==='number' ? (parseFloat(el.value)||0) : el.value;
+      saveState(); rechnen();
+    });
+  });
+
+  /* ---------- Kalkulation ---------- */
+  function kalkBerechnen(){
+    var k = parseFloat(val('kKosten'))||0;
+    var h = parseFloat(val('kStunden'))||0;
+    var p = parseFloat(val('kParameter'))||0;
+    var v = val('kVariante');
+    var res = K.angebotspreis(k, h, p, v);
+    var stundensatz = K.stundensatz(k, h);
+    $('kErgebnis').innerHTML =
+      '<h3>Ergebnis</h3>'+
+      '<div class="out">'+res.preis.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</div>'+
+      '<p class="muted">Angebotspreis für '+h+' h · Kostenbasis '+k.toLocaleString('de-DE')+' € · '+
+      (res.variante==='marge'?'Marge '+p+' %':'Aufschlag '+p+' %')+'</p>'+
+      '<table><tbody>'+
+      '<tr><td>Kosten</td><td class="num">'+k.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</td></tr>'+
+      '<tr><td>Deckungsbeitrag</td><td class="num">'+Math.round((res.preis-k)*100)/100+' €</td></tr>'+
+      '<tr><td>entspricht einer Marge von</td><td class="num">'+res.margeProzent.toLocaleString('de-DE',{maximumFractionDigits:2})+' %</td></tr>'+
+      '<tr><td>Kosten je Stunde</td><td class="num">'+stundensatz.stundensatz.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €</td></tr>'+
+      '</tbody></table>'+
+      '<div class="note">'+escapeHtml(res.hinweis)+'</div>';
+  }
+  $('kBerechnen').addEventListener('click', kalkBerechnen);
+  ['kKosten','kStunden','kParameter'].forEach(function(id){ $(id).addEventListener('input', kalkBerechnen); });
+  $('kVariante').addEventListener('change', kalkBerechnen);
+  $('kSatzBerechnen').addEventListener('click', function(){
+    var s = K.stundensatz(val('kJahreskosten'), val('kArbeitsstunden'));
+    $('kSatzErgebnis').innerHTML = '<div class="out">'+s.stundensatz.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' € / h</div>'+
+      '<p class="muted">Kosten je fakturierbarer Stunde</p>';
+  });
+
+  /* ---------- Impressum ---------- */
+  function impressumErzeugen(){
+    var c = K.impressumCheck({ name: val('iName'), kontakt: val('iKontakt'), ustId: val('iUstId'),
+      register: val('iRegister'), berufsrecht: val('iBerufsrecht') });
+    var rows = c.felder.map(function(f){
+      return '<tr><td>'+escapeHtml(f.label)+'</td><td><span class="status '+(f.status==='ok'?'ok':(f.status==='fehlt'?'fehlt':'optional'))+'">'+f.status+'</span></td></tr>';
+    }).join('');
+    var text = 'Angaben gemäß § 5 DDG\n\n' +
+      (val('iName')||'[Name und Anschrift]') + '\n\n' +
+      'Kontakt\nE-Mail: ' + (val('iKontakt')||'[E-Mail]') + '\n' +
+      (val('iUstId') ? 'USt-IdNr./W-IdNr.: ' + val('iUstId') + '\n' : '') +
+      (val('iRegister') ? 'Register: ' + val('iRegister') + '\n' : '') +
+      (val('iBerufsrecht') ? 'Berufsrechtliche Angaben: ' + val('iBerufsrecht') + '\n' : '');
+    $('iErgebnis').innerHTML =
+      '<table><thead><tr><th>Angabe</th><th style="width:130px">Status</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      (c.vollstaendig ? '<div class="okbox">Pflichtangaben vollständig.</div>' : '<div class="note">Es fehlen Pflichtangaben.</div>')+
+      '<h3>Mustertext (bitte prüfen und anpassen)</h3>'+
+      '<textarea id="iText" style="min-height:220px">'+escapeHtml(text)+'</textarea>';
+  }
+  $('iErzeugen').addEventListener('click', impressumErzeugen);
+
+  /* ---------- Start ---------- */
+  var st = loadState();
+  Object.keys(st).forEach(function(k){ if (k!=='items') setVal(k, st[k]); });
+  if (!val('rDatum')) { var d=new Date(); setVal('rDatum', d.toISOString().slice(0,10)); }
+  renderItems();
+  rechnen();
+  kalkBerechnen();
+})();
+</script>
+</body>
+</html>
