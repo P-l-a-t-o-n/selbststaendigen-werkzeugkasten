@@ -14,7 +14,7 @@ var CONFIG = {
   VERKAUF_AKTIV: false,
 
   /* Wird nach der Veröffentlichung mit der echten Domain gefüllt. */
-  DOMAENE: "",
+  DOMAENE: "https://p-l-a-t-o-n.github.io/selbststaendigen-werkzeugkasten/",
 
   PREISE: {
     'werkzeug-set': { name: 'Werkzeug-Set', preis: '19 €' },
