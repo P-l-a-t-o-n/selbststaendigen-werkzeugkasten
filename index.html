@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selbstständigen-Werkzeugkasten 2026 — Rechnung, Kalkulation, Impressum ohne Zusatzkosten</title>
+<meta name="description" content="Rechnungs-Generator mit Pflichtangaben-Check (§ 14 UStG), Preis-Kalkulator (Marge vs. Aufschlag) und Impressum-Assistent (§ 5 DDG). Läuft im Browser, ohne Cookies, ohne Tracking.">
+<link rel="canonical" id="canonical" href="">
+<link rel="icon" href="data:,">
+<meta property="og:title" content="Selbstständigen-Werkzeugkasten 2026">
+<meta property="og:description" content="Rechnung, Kalkulation und Impressum — geprüft nach deutschem Recht.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="bilder/01-cover.png">
+<style>
+  :root{ --bg:#0f1216; --card:#171b21; --ink:#e7ecf3; --muted:#9aa5b4; --line:#272d36;
+         --accent:#3b82f6; --accent2:#22c55e; --warnbg:#2b2313; --warn:#e2b263; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  header{padding:18px 0;border-bottom:1px solid var(--line)}
+  .brand{font-weight:700;letter-spacing:-.01em}
+  .brand span{color:var(--muted);font-weight:400;font-size:14px;margin-left:8px}
+  main{padding:34px 0 70px}
+  h1{font-size:clamp(28px,4.4vw,44px);line-height:1.12;letter-spacing:-.025em;margin:0 0 14px}
+  h2{font-size:22px;letter-spacing:-.015em;margin:44px 0 12px}
+  h3{font-size:16px;margin:0 0 6px}
+  p.lead{font-size:18px;color:var(--muted);max-width:62ch;margin:0 0 22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .btn{display:inline-block;font-size:16px;padding:12px 20px;border-radius:10px;border:1px solid var(--accent);
+    background:var(--accent);color:#fff;text-decoration:none;cursor:pointer;font-weight:600}
+  .btn.alt{background:transparent;border-color:var(--line);color:var(--ink);font-weight:500}
+  .btn.green{background:var(--accent2);border-color:var(--accent2);color:#06231a}
+  .btn-inaktiv{opacity:.65}
+  .price{font-size:34px;font-weight:700;letter-spacing:-.03em}
+  ul{margin:8px 0 0;padding-left:18px}
+  li{margin:4px 0}
+  .muted{color:var(--muted);font-size:14px}
+  .note{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:14px 16px;font-size:14px;margin:18px 0}
+  .okbox{background:#132a20;color:#5fd39b;border-radius:12px;padding:14px 16px;font-size:14px;margin:18px 0}
+  table{width:100%;border-collapse:collapse;font-size:15px}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .steps{counter-reset:s}
+  .steps li{list-style:none;counter-increment:s;position:relative;padding-left:38px;margin:12px 0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:14px;display:grid;place-items:center;font-weight:700}
+  footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13.5px}
+  a{color:var(--accent)}
+  .tag{display:inline-block;font-size:12px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);margin-right:6px}
+  .hero{display:grid;gap:22px;grid-template-columns:1.15fr .85fr;align-items:start}
+  @media (max-width:760px){ .hero{grid-template-columns:1fr} }
+  .proof{font-size:14px;color:var(--muted);margin:16px 0 0}
+  .shots{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+  .shot{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .shot img{display:block;width:100%;height:auto}
+  .shot figcaption{padding:12px 16px;font-size:14px;color:var(--muted)}
+  .shot figcaption b{color:var(--ink)}
+  .rowbtns{display:flex;gap:12px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand">Selbstständigen-Werkzeugkasten 2026 <span>für Solo-Selbstständige in Deutschland</span></div>
+</div></header>
+
+<main class="wrap">
+
+<section class="hero">
+  <div>
+    <p class="tag">Rechtsstand 10.11.2026</p>
+    <p class="tag">Ohne Abo</p>
+    <p class="tag">Keine Cookies</p>
+    <h1 id="heroTitle">Rechnung, Kalkulation, Impressum — in fünf Minuten fertig.</h1>
+    <p class="lead" id="heroLead">Die drei Werkzeuge, an denen Solo-Selbstständige in Deutschland am häufigsten hängen: die Rechnung mit den Pflichtangaben, der Preis, der wirklich für einen Aufwand steht, und das Impressum, das die Abmahnkosten vermeidet.</p>
+    <div class="rowbtns">
+      <a class="btn" href="tool.html">Kostenlos ausprobieren</a>
+      <a class="btn alt" id="cta-preise" href="#inhalt">Was ist drin?</a>
+    </div>
+    <p class="proof" id="heroProof">Rechnungsgenerator mit Pflichtangaben-Check nach § 14 UStG · Kalkulator, der Marge und Aufschlag trennt · Impressum-Assistent nach § 5 DDG · alles läuft lokal im Browser.</p>
+  </div>
+  <div class="card">
+    <h3>Was drin ist</h3>
+    <ul>
+      <li>Rechnungs-Generator inkl. Pflichtangaben-Check und Druck/PDF</li>
+      <li>Kleinunternehmer-Check nach § 19 UStG (25.000 € / 100.000 €)</li>
+      <li>Preis-Kalkulator: Marge vs. Aufschlag, Stundensatz</li>
+      <li>Impressum-Assistent nach § 5 DDG</li>
+      <li>Excel-Kalkulationsblatt, Checklisten, Muster für AGB &amp; Datenschutz</li>
+      <li>KI-Arbeitsanweisungen für Angebote, Protokolle, Nachfassen</li>
+    </ul>
+    <p class="muted" style="margin-bottom:0">Die Werkzeuge laufen kostenlos und offline im Browser. Die Vorlagen, Checklisten und Muster gibt es als Komplett-Kit.</p>
+  </div>
+</section>
+
+<div class="okbox" id="modus-hinweis">
+  <b>Jetzt kostenlos nutzbar.</b> Alle drei Werkzeuge laufen ohne Anmeldung, ohne E-Mail-Adresse und ohne
+  Tracking — die Eingaben bleiben in deinem Browser. Das Komplett-Kit mit Vorlagen, Excel-Kalkulationsblatt,
+  Checklisten und Mustertexten ist vorbereitet und erscheint, sobald die Verkaufsseite vollständig ist.
+</div>
+
+<h2 id="bilder-anker">So sieht es aus</h2>
+<div class="shots">
+  <figure class="shot" style="margin:0">
+    <img src="bilder/01-cover.png" width="1200" height="1200" alt="Titelbild des Selbstständigen-Werkzeugkastens mit den drei Werkzeugen Rechnung, Preis-Kalkulation und Impressum">
+    <figcaption><b>Der Werkzeugkasten</b> — Rechnung, Kalkulation, Impressum in einem Paket.</figcaption>
+  </figure>
+  <figure class="shot" style="margin:0">
+    <img src="bilder/03-rechnung.png" width="1180" height="900" alt="Rechnungs-Generator mit Prüfung der Pflichtangaben nach § 14 UStG und Kleinunternehmer-Hinweis nach § 19 UStG">
+    <figcaption><b>Rechnung</b> — Pflichtangaben-Check nach § 14 UStG, Kleinunternehmer-Status nach § 19 UStG.</figcaption>
+  </figure>
+  <figure class="shot" style="margin:0">
+    <img src="bilder/04-kalkulation.png" width="1180" height="900" alt="Preis-Kalkulator mit Marge- und Aufschlag-Rechnung">
+    <figcaption><b>Preis-Kalkulation</b> — Marge und Aufschlag getrennt gerechnet, inklusive Stundensatz.</figcaption>
+  </figure>
+  <figure class="shot" style="margin:0">
+    <img src="bilder/05-impressum.png" width="1180" height="900" alt="Impressum-Assistent mit Prüfung nach § 5 DDG und erzeugtem Mustertext">
+    <figcaption><b>Impressum</b> — Pflichtangaben nach § 5 DDG prüfen, Mustertext erzeugen.</figcaption>
+  </figure>
+</div>
+
+<h2>So funktioniert's</h2>
+<ol class="steps">
+  <li><b>Tool kostenlos testen.</b> Der Rechnungs-Generator läuft direkt im Browser — keine Anmeldung, keine E-Mail-Adresse, kein Tracking.</li>
+  <li><b>Fehlende Angaben werden gemeldet.</b> Das Werkzeug prüft die Pflichtangaben nach § 14 UStG und sagt, was fehlt — inklusive Kleinunternehmer-Hinweis nach § 19 UStG.</li>
+  <li><b>Mit dem Komplett-Kit weiterarbeiten.</b> Rechnungstext, Kalkulationsblatt und Checklisten sind Vorlagen, keine Blackbox: sie zeigen die Rechnung dahinter.</li>
+</ol>
+
+<h2 id="inhalt">Was drin ist — im Detail</h2>
+<table>
+  <thead><tr><th>Datei</th><th>Zweck</th><th class="num">Format</th></tr></thead>
+  <tbody>
+    <tr><td>Rechnungs-Generator</td><td>Rechnung erstellen, Pflichtangaben prüfen, drucken</td><td class="num">HTML (offline)</td></tr>
+    <tr><td>Preis-Kalkulator</td><td>Kosten, Stundensatz, Angebotspreis, Marge vs. Aufschlag</td><td class="num">HTML (offline)</td></tr>
+    <tr><td>Impressum-Assistent</td><td>§ 5 DDG prüfen, Mustertext erzeugen</td><td class="num">HTML (offline)</td></tr>
+    <tr><td>Kalkulationsblatt</td><td>Kostenstellen, Angebotskalkulation, Umsatz-Tracking</td><td class="num">XLSX</td></tr>
+    <tr><td>Checklisten</td><td>Gründung, Angebot, Rechnung, Jahresabschluss</td><td class="num">MD</td></tr>
+    <tr><td>Muster AGB + Datenschutz</td><td>Entwurf zum Prüfen (keine Rechtsberatung)</td><td class="num">MD</td></tr>
+    <tr><td>KI-Arbeitsanweisungen</td><td>Wiederverwendbare Prompts für Angebote, Protokolle, Nachfassen</td><td class="num">MD</td></tr>
+  </tbody>
+</table>
+
+<div id="preise" style="display:none">
+  <h2>Preise</h2>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Werkzeug-Set</h3>
+      <div class="price">19 €</div>
+      <p class="muted">einmalig</p>
+      <ul>
+        <li>Rechnungs-Generator mit Pflichtangaben-Check</li>
+        <li>Preis-Kalkulator (Marge/Aufschlag/Stundensatz)</li>
+        <li>Impressum-Assistent</li>
+        <li>Offline nutzbare HTML-Datei</li>
+      </ul>
+      <a class="btn alt" href="#" data-buy="werkzeug-set">Werkzeug-Set kaufen</a>
+    </div>
+    <div class="card" style="border-color:#3b82f6">
+      <h3>Komplett-Kit <span class="tag">empfohlen</span></h3>
+      <div class="price">39 €</div>
+      <p class="muted">einmalig</p>
+      <ul>
+        <li>Alles aus dem Werkzeug-Set</li>
+        <li>Excel-Kalkulationsblatt (Kostenstellen, Angebotspreis)</li>
+        <li>Checklisten: Gründung, Angebote, Rechnung, Jahresabschluss</li>
+        <li>Muster für AGB und Datenschutzerklärung (Entwurf, prüfen lassen)</li>
+        <li>KI-Arbeitsanweisungen für Angebote und Nachfassen</li>
+        <li>Updates inklusive</li>
+      </ul>
+      <a class="btn" href="#" data-buy="komplett-kit">Komplett-Kit kaufen</a>
+    </div>
+  </div>
+  <p class="muted" id="kauf-hinweis" role="status"></p>
+</div>
+
+<h2>Häufige Fragen</h2>
+<div class="grid g2">
+  <div class="card"><h3>Brauche ich für das Tool ein Gewerbe?</h3>
+  <p class="muted">Nein. Das Tool ist ein Arbeitsmittel. Ob deine Tätigkeit freiberuflich oder ein Gewerbe ist, ist eine Einzelfallfrage (§ 1 und § 14 GewO) — das Tool sagt das auch so und ersetzt keine Beratung.</p></div>
+  <div class="card"><h3>Was passiert mit meinen Eingaben?</h3>
+  <p class="muted">Nichts. Die Verarbeitung läuft vollständig in deinem Browser. Es gibt keine Server, keine Cookies, kein Analytics, keine Konten. Es wird nichts übertragen.</p></div>
+  <div class="card"><h3>Ist die Rechtslage aktuell?</h3>
+  <p class="muted">Die eingebauten Werte stammen aus den am 10.11.2026 abgerufenen amtlichen Gesetzestexten (§ 19 UStG: 25.000 € / 100.000 €). Die Quellenlinks stehen im Werkzeug und im Impressum.</p></div>
+  <div class="card"><h3>Was ist mit den Mustern?</h3>
+  <p class="muted">Die Muster für AGB und Datenschutzerklärung sind Entwürfe zur eigenen Verwendung. Sie ersetzen keine Rechtsberatung. Prüfe sie vor dem Einsatz — besonders die Widerrufsbestätigung nach § 312f BGB.</p></div>
+</div>
+
+<div class="note">
+  <b>Hinweis zu den Mustern:</b> Die mitgelieferten Muster für AGB und Datenschutzerklärung sind Entwürfe zur eigenen Verwendung. Sie ersetzen keine Rechtsberatung. Prüfe sie vor dem Einsatz — insbesondere, wenn du personenbezogene Daten verarbeitest.
+</div>
+
+</main>
+
+<footer class="wrap">
+  <p><b>Selbstständigen-Werkzeugkasten</b> · <a href="impressum.html">Impressum</a> · <a href="agb.html">AGB</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="tool.html">Werkzeug</a></p>
+  <p>Keine Cookies, kein Tracking, keine externen Schriftarten oder Skripte. Diese Seite lädt keine Inhalte von Drittanbietern.</p>
+</footer>
+
+<script src="config.js"></script>
+<script>
+/* A/B-Variante: ?v=b schaltet Kopie und Betonung um (messbar über getrennte Links). */
+(function(){
+  var p = new URLSearchParams(location.search).get('v');
+  if (p !== 'b') return;
+  document.getElementById('heroTitle').textContent = 'Die erste Rechnung, die bei deinem Kunden durchgeht.';
+  document.getElementById('heroLead').textContent = 'Fehlende Pflichtangaben nach § 14 UStG sind der häufigste Grund für Rückfragen und Mahnungen. Der Generator sagt dir vor dem Absenden, was fehlt — und ob du als Kleinunternehmer überhaupt Umsatzsteuer ausweisen musst.';
+  document.getElementById('heroProof').textContent = 'Pflichtangaben-Check nach § 14 UStG · Kleinunternehmer-Status nach § 19 UStG (25.000 € / 100.000 €) · Druckfertige Rechnung · alles lokal im Browser.';
+})();
+
+/* Verkaufsmodus: Preise und Kaufbuttons nur, wenn config.js den Verkauf freischaltet.
+   Bis dahin bleibt die Seite ein kostenloses Informationsangebot. */
+document.addEventListener('DOMContentLoaded', function(){
+  var aktiv = CONFIG.VERKAUF_AKTIV;
+  var hinweis = document.getElementById('modus-hinweis');
+  if (aktiv && hinweis) {
+    hinweis.className = 'note';
+    hinweis.innerHTML = '<b>Verkauf läuft über die Verkaufsplattform.</b> Preis, Steuern und Zustellung ' +
+      'werden dort abgerechnet; Links unten führen direkt zum Checkout.';
+  }
+  var cta = document.getElementById('cta-preise');
+  if (cta) {
+    cta.textContent = aktiv ? 'Preise ansehen' : 'Was ist drin?';
+    cta.setAttribute('href', aktiv ? '#preise' : '#inhalt');
+  }
+  document.querySelectorAll('[data-buy]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var key = a.getAttribute('data-buy');
+      if (CONFIG.CHECKOUT[key]) { e.preventDefault(); window.location.href = CONFIG.CHECKOUT[key]; return; }
+      e.preventDefault();
+      var kh = document.getElementById('kauf-hinweis');
+      if (kh) kh.innerHTML = 'Der Checkout-Link wird gesetzt, sobald das Verkaufskonto bestätigt ist. ' +
+        'Bis dahin: <a href="tool.html">Werkzeug kostenlos nutzen</a>.';
+    });
+  });
+});
+</script>
+</body>
+</html>
